@@ -136,7 +136,7 @@ export default function SubmitProjectPage() {
 
     setIsLoadingProjects(true);
     try {
-      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8080';
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
       const response = await fetch(`${backendUrl}/projects/all`);
       const data = await response.json();
       if (data.status === 'success') {
@@ -262,7 +262,7 @@ export default function SubmitProjectPage() {
     setSubmitError(null);
     
     try {
-      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8080';
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
       const response = await fetch(`${backendUrl}/fundraising/funding-rounds/${selectedProject.key}`);
       
       if (!response.ok) {
@@ -322,7 +322,7 @@ export default function SubmitProjectPage() {
     tier: number | null;
   }>> => {
     try {
-      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8080';
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
       const url = `${backendUrl}/fundraising/funding-rounds/${coinKey}`;
       
       const response = await fetch(url);
@@ -467,7 +467,7 @@ export default function SubmitProjectPage() {
       return;
     }
 
-    if (password !== "teaminfer") {
+    if (password !== process.env.PASSWORD) {
       setSubmitError("Invalid admin password");
       return;
     }
@@ -476,12 +476,12 @@ export default function SubmitProjectPage() {
     setSubmitError(null);
 
     try {
-      const helperApiUrl = process.env.NEXT_PUBLIC_HELPERS_API_URL || 'https://helper-apis-and-scrappers.onrender.com';
+      const helperApiUrl = process.env.NEXT_PUBLIC_HELPERS_API_URL;
       
       const response = await fetch(`${helperApiUrl}/v1/projects/${deleteSlug}`, {
         method: 'DELETE',
         headers: {
-          'X-ADMIN-KEY': 'teaminfer'
+          'X-ADMIN-KEY': process.env.PASSWORD,
         }
       });
 
@@ -507,7 +507,7 @@ export default function SubmitProjectPage() {
       return;
     }
 
-    if (password !== "teaminfer") {
+    if (password !== process.env.PASSWORD) {
       setSubmitError("Invalid admin password");
       return;
     }
@@ -516,7 +516,7 @@ export default function SubmitProjectPage() {
     setSubmitError(null);
 
     try {
-      const helperApiUrl = process.env.NEXT_PUBLIC_HELPERS_API_URL || 'https://helper-apis-and-scrappers.onrender.com';
+      const helperApiUrl = process.env.NEXT_PUBLIC_HELPERS_API_URL;
       
       const projectPayload = {
         name: formData.name,
@@ -534,7 +534,7 @@ export default function SubmitProjectPage() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-ADMIN-KEY': 'teaminfer'
+          'X-ADMIN-KEY': process.env.PASSWORD,
         },
         body: JSON.stringify(projectPayload)
       });

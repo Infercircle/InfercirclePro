@@ -10,8 +10,8 @@ export const dynamic = 'force-dynamic';
 
 // 🔥 SSR: Fetch projects data on every request (secure API calls)
 async function fetchProjects() {
-  const helperApiUrl = process.env.NEXT_PUBLIC_HELPERS_API_URL || 'https://helper-apis-and-scrappers-zrrs.onrender.com';
-  const apiKey = process.env.TGE_API_KEY || 'ak_pro_Jpo05NPhS_VEMIDrAOr-ayWHrsg5q3CO';
+  const helperApiUrl = process.env.NEXT_PUBLIC_HELPERS_API_URL;
+  const apiKey = process.env.TGE_API_KEY;
   
   try {
     const controller = new AbortController();
@@ -64,7 +64,7 @@ async function fetchProjects() {
 
 // 🔥 SSG: Fetch platform images at build time (cached)
 async function fetchPlatformImages() {
-  const helperApiUrl = process.env.NEXT_PUBLIC_HELPERS_API_URL || 'https://helper-apis-and-scrappers-zrrs.onrender.com';
+  const helperApiUrl = process.env.NEXT_PUBLIC_HELPERS_API_URL;
   
   try {
     const controller = new AbortController();
