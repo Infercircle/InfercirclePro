@@ -1,0 +1,83 @@
+@import "tailwindcss";
+
+
+body {
+  background: black;
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Background SVG responsive scaling */
+.bg-svg-container {
+  position: absolute;
+  inset: 0;
+  opacity: 0.4;
+}
+
+.bg-svg-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.5);
+  transform-origin: center;
+}
+
+/* Mobile screens - make SVG more visible */
+@media (max-width: 640px) {
+  .bg-svg-container {
+    opacity: 0.96;
+  }
+  
+  .bg-svg-container img {
+    transform: scale(2);
+  }
+}
+
+/* Medium screens */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .bg-svg-container {
+    opacity: 0.95;
+  }
+  
+  .bg-svg-container img {
+    transform: scale(1.8);
+  }
+}
+
+/* Large screens - limit maximum size */
+@media (min-width: 1025px) {
+  .bg-svg-container {
+    opacity: 0.9;
+  }
+  
+  .bg-svg-container img {
+    transform: scale(1.2) translate(-20%);
+    max-width: 1200px;
+    max-height: 800px;
+    margin: auto;
+  }
+}
+
+/* Tippy.js custom styling */
+.tippy-box {
+  background-color: #000 !important;
+  color: #fff !important;
+  border-radius: 6px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5) !important;
+}
+
+.tippy-box[data-placement^='top'] > .tippy-arrow::before {
+  border-top-color: #000 !important;
+}
+
+.tippy-box[data-placement^='bottom'] > .tippy-arrow::before {
+  border-bottom-color: #000 !important;
+}
+
+.tippy-box[data-placement^='left'] > .tippy-arrow::before {
+  border-left-color: #000 !important;
+}
+
+.tippy-box[data-placement^='right'] > .tippy-arrow::before {
+  border-right-color: #000 !important;
+}
