@@ -1,7 +1,5 @@
 import React from "react";
 import TGEPageClient from "./client";
-import Paywall from "../components/Paywall";
-import { cookies } from "next/headers";
 import { createClient } from "@supabase/supabase-js";
 
 export const dynamic = 'force-dynamic';
