@@ -230,7 +230,7 @@ export default function TGEPageClient({
   const allPlatforms=React.useMemo(()=>[...new Set(projects.flatMap(r=>r.infoPlatforms))].sort(),[projects]);
 
   const getStatusBadgeClass = (status: ProjectStatus, compact: boolean = false, isSelected: boolean = false) => {
-    const base = compact ? "px-1 py-0.5 text-xs sm:px-2 sm:py-1 sm:text-xs" : "px-1.5 py-1 text-xs sm:px-2.5 sm:py-1.5 sm:text-sm";
+    const base = compact ? "px-1.5 py-0.5 text-xs sm:px-2 sm:py-1 sm:text-xs" : "px-2 py-1 text-xs sm:px-2.5 sm:py-1.5 sm:text-sm";
     switch (status) {
       case "active":
         return isSelected
@@ -248,7 +248,7 @@ export default function TGEPageClient({
   };
 
   const getTypeBadgeClass = (type: ProjectType, compact: boolean = false, isSelected: boolean = false) => {
-    const base = compact ? "px-1 py-0.5 text-xs sm:px-2 sm:py-1 sm:text-xs" : "px-1.5 py-1 text-xs sm:px-2.5 sm:py-1.5 sm:text-sm";
+    const base = compact ? "px-1.5 py-0.5 text-xs sm:px-2 sm:py-1 sm:text-xs" : "px-2 py-1 text-xs sm:px-2.5 sm:py-1.5 sm:text-sm";
     switch (type) {
       case "Pre-TGE":
         return isSelected
@@ -275,11 +275,11 @@ export default function TGEPageClient({
 
   return (
     <div className="text-white min-h-screen">
-      <div className="max-w-7xl mx-auto flex flex-col gap-2 sm:gap-4 px-2 sm:px-4">
+      <div className="max-w-7xl mx-auto flex flex-col gap-3 sm:gap-4 px-3 sm:px-4">
         {/* Header */}
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-2 sm:gap-4">
-          <h1 className="text-xl sm:text-3xl font-bold text-white text-center lg:text-left">Campaigns</h1>
-          <div className="flex items-center gap-2 sm:gap-4 w-full lg:w-auto">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 sm:gap-4">
+          <h1 className="text-2xl sm:text-3xl font-bold text-white text-center lg:text-left">Campaigns</h1>
+          <div className="flex items-center gap-3 sm:gap-4 w-full lg:w-auto">
             {/* Search */}
             <div className="relative flex-1 lg:flex-initial lg:w-80">
               <input
@@ -287,9 +287,9 @@ export default function TGEPageClient({
                 placeholder="Search projects, backers, platforms..."
                 value={searchQuery}
                 onChange={e=>setSearchQuery(e.target.value)}
-                className="w-full px-2 py-1.5 pl-8 sm:px-4 sm:py-2 sm:pl-10 bg-[#151820] border border-[#2a2e35] rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-400 focus:ring-1 focus:ring-purple-400 text-sm sm:text-base"
+                className="w-full px-3 py-2 pl-9 sm:px-4 sm:py-2 sm:pl-10 bg-[#151820] border border-[#2a2e35] rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-400 focus:ring-1 focus:ring-purple-400 text-sm sm:text-base"
               />
-              <svg className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 w-3 h-3 sm:w-4 sm:h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="absolute left-2.5 sm:left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
                   d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
               </svg>
@@ -297,7 +297,7 @@ export default function TGEPageClient({
             {/* Filters */}
             <div className="relative" ref={filterRef}>
               <button
-                className={`flex items-center gap-1 sm:gap-2 px-2 py-1.5 sm:px-3 sm:py-2 border rounded transition text-xs sm:text-sm ${
+                className={`flex items-center gap-1.5 sm:gap-2 px-2.5 py-2 sm:px-3 sm:py-2 border rounded transition text-sm sm:text-sm ${
                   isFilterOpen||getActiveFilterCount()>0
                     ? "bg-purple-500/60 text-white border-purple-400"
                     : "bg-purple-500/20 text-gray-300 border-purple-400 hover:bg-purple-500/60 hover:text-gray-100"
@@ -305,16 +305,16 @@ export default function TGEPageClient({
                 onClick={()=>setIsFilterOpen(p=>!p)}
               >
                 <span className="font-medium">Filters</span>
-                <span className="px-1 py-0.5 sm:px-1.5 sm:py-0.5 text-xs bg-purple-400 text-white rounded-full">
+                <span className="px-1.5 py-0.5 sm:px-1.5 sm:py-0.5 text-xs bg-purple-400 text-white rounded-full">
                   {getActiveFilterCount()}
                 </span>
               </button>
               {isFilterOpen && (
-                <div className="absolute right-0 z-40 w-72 sm:w-80 p-2 sm:p-4 mt-2 bg-[#151820] rounded-lg shadow-xl">
+                <div className="absolute right-0 z-40 w-76 sm:w-80 p-3 sm:p-4 mt-2 bg-[#151820] rounded-lg shadow-xl">
                   {/* Status */}
                   <div className="mb-3 sm:mb-4">
-                    <h3 className="mb-1.5 sm:mb-2 text-xs sm:text-sm font-medium text-white">Status</h3>
-                    <div className="flex flex-wrap gap-1 sm:gap-2">
+                    <h3 className="mb-2 sm:mb-2 text-sm sm:text-sm font-medium text-white">Status</h3>
+                    <div className="flex flex-wrap gap-1.5 sm:gap-2">
                       {STATUS_OPTIONS.map(o=>{
                         const isSelected = statusFilters.includes(o.key);
                         return(
@@ -331,8 +331,8 @@ export default function TGEPageClient({
                   </div>
                   {/* Type */}
                   <div className="mb-3 sm:mb-4">
-                    <h3 className="mb-1.5 sm:mb-2 text-xs sm:text-sm font-medium text-white">Type</h3>
-                    <div className="flex flex-wrap gap-1 sm:gap-2">
+                    <h3 className="mb-2 sm:mb-2 text-sm sm:text-sm font-medium text-white">Type</h3>
+                    <div className="flex flex-wrap gap-1.5 sm:gap-2">
                       {TYPE_OPTIONS.map(o=>{
                         const isSelected = typeFilters.includes(o.key);
                         return(
@@ -349,19 +349,19 @@ export default function TGEPageClient({
                   </div>
                   {/* Sort */}
                   <div className="mb-3 sm:mb-4">
-                    <h3 className="mb-1.5 sm:mb-2 text-xs sm:text-sm font-medium text-white">Sort By</h3>
-                    <div className="space-y-1 sm:space-y-2">
+                    <h3 className="mb-2 sm:mb-2 text-sm sm:text-sm font-medium text-white">Sort By</h3>
+                    <div className="space-y-1.5 sm:space-y-2">
                       {SORT_OPTIONS.map(o=>{
                         const sel=sortBy===o.key;
                         return(
                           <label key={o.key} className="flex items-center cursor-pointer">
                             <input type="radio" name="sort" checked={sel} onChange={()=>setSortBy(o.key)} className="sr-only"/>
-                            <div className={`w-3 h-3 sm:w-4 sm:h-4 border-2 rounded-full mr-2 sm:mr-3 flex items-center justify-center ${
+                            <div className={`w-3.5 h-3.5 sm:w-4 sm:h-4 border-2 rounded-full mr-2.5 sm:mr-3 flex items-center justify-center ${
                               sel?"border-purple-400 bg-purple-400":"border-gray-400"
                             }`}>
                               {sel && <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-white rounded-full"/>}
                             </div>
-                            <span className="text-xs sm:text-sm text-gray-300">{o.label}</span>
+                            <span className="text-sm sm:text-sm text-gray-300">{o.label}</span>
                           </label>
                         );
                       })}
@@ -369,8 +369,8 @@ export default function TGEPageClient({
                   </div>
                   {/* Platforms */}
                   <div>
-                    <h3 className="mb-1.5 sm:mb-2 text-xs sm:text-sm font-medium text-white">Platforms</h3>
-                    <div className="space-y-1 sm:space-y-2 max-h-32 sm:max-h-48 overflow-y-auto">
+                    <h3 className="mb-2 sm:mb-2 text-sm sm:text-sm font-medium text-white">Platforms</h3>
+                    <div className="space-y-1.5 sm:space-y-2 max-h-36 sm:max-h-48 overflow-y-auto">
                       {allPlatforms.map(p=>{
                         const sel=platformFilters.includes(p);
                         return(
@@ -379,7 +379,7 @@ export default function TGEPageClient({
                               onChange={()=>setPlatformFilters(prev=>prev.includes(p)?prev.filter(x=>x!==p):[...prev,p])}
                               className="sr-only"
                             />
-                            <div className={`w-3 h-3 sm:w-4 sm:h-4 border-2 rounded mr-2 sm:mr-3 flex items-center justify-center ${
+                            <div className={`w-3.5 h-3.5 sm:w-4 sm:h-4 border-2 rounded mr-2.5 sm:mr-3 flex items-center justify-center ${
                               sel?"border-purple-400 bg-purple-400":"border-gray-400"
                             }`}>
                               {sel && (
@@ -390,14 +390,14 @@ export default function TGEPageClient({
                                 </svg>
                               )}
                             </div>
-                            <div className="flex items-center gap-1 sm:gap-2">
+                            <div className="flex items-center gap-1.5 sm:gap-2">
                               <img
                                 src={initialPlatformImages.platforms[p.toLowerCase()]||undefined}
                                 alt={p}
-                                className="w-3 h-3 sm:w-4 sm:h-4 rounded-full object-cover"
+                                className="w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full object-cover"
                                 onError={e=>(e.target as HTMLImageElement).style.display="none"}
                               />
-                              <span className="text-xs sm:text-sm text-gray-300">{p}</span>
+                              <span className="text-sm sm:text-sm text-gray-300">{p}</span>
                             </div>
                           </label>
                         );
@@ -413,9 +413,9 @@ export default function TGEPageClient({
         {/* Table Container */}
         <div className="w-full border-y border-[#2a2e35] rounded-t-lg max-h-[100vh] overflow-auto">  
           {apiError && (
-            <div className="p-2 sm:p-3 mb-1 sm:mb-2 bg-red-500/10 border border-red-500/20 rounded-t-lg">
-              <div className="flex items-center gap-1 sm:gap-2 text-red-300 text-xs sm:text-sm">
-                <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="currentColor" viewBox="0 0 20 20">
+            <div className="p-2.5 sm:p-3 mb-1.5 sm:mb-2 bg-red-500/10 border border-red-500/20 rounded-t-lg">
+              <div className="flex items-center gap-1.5 sm:gap-2 text-red-300 text-sm sm:text-sm">
+                <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" clipRule="evenodd"
                     d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
                   />
@@ -424,54 +424,54 @@ export default function TGEPageClient({
               </div>
             </div>
           )}
-          <table className="min-w-[640px] sm:min-w-[1280px] text-left text-xs sm:text-sm w-full">
+          <table className="min-w-[720px] sm:min-w-[1280px] text-left text-sm sm:text-sm w-full">
             <thead className="bg-[#151820] text-[#A3A3A3] sticky top-0 z-30">
               <tr>
-                <th className="sticky left-0 z-40 w-4 sm:w-8 px-1 py-1.5 sm:px-2 sm:py-3 bg-[#151820] font-semibold">#</th>
-                <th className="sticky left-4 sm:left-8 z-40 w-24 sm:w-52 px-2 py-1.5 sm:px-4 sm:py-3 bg-[#151820] font-semibold">Projects</th>
-                <th className="w-14 sm:w-28 px-2 py-1.5 sm:px-4 sm:py-3 font-semibold">Type</th>
-                <th className="w-32 sm:w-64 px-2 py-1.5 sm:px-4 sm:py-3 font-semibold">Backers</th>
-                <th className="w-18 sm:w-36 px-2 py-1.5 sm:px-4 sm:py-3 font-semibold">Raised</th>
-                <th className="w-18 sm:w-36 px-2 py-1.5 sm:px-4 sm:py-3 font-semibold">Rewards</th>
-                <th className="w-25 sm:w-50 px-2 py-1.5 sm:px-4 sm:py-3 font-semibold">Platform</th>
-                <th className="w-14 sm:w-28 px-2 py-1.5 sm:px-4 sm:py-3 font-semibold">Status</th>
+                <th className="sticky left-0 z-40 w-6 sm:w-8 px-1.5 py-2 sm:px-2 sm:py-3 bg-[#151820] font-semibold">#</th>
+                <th className="sticky left-6 sm:left-8 z-40 w-28 sm:w-52 px-2.5 py-2 sm:px-4 sm:py-3 bg-[#151820] font-semibold">Projects</th>
+                <th className="w-16 sm:w-28 px-2.5 py-2 sm:px-4 sm:py-3 font-semibold">Type</th>
+                <th className="w-36 sm:w-64 px-2.5 py-2 sm:px-4 sm:py-3 font-semibold">Backers</th>
+                <th className="w-20 sm:w-36 px-2.5 py-2 sm:px-4 sm:py-3 font-semibold">Raised</th>
+                <th className="w-20 sm:w-36 px-2.5 py-2 sm:px-4 sm:py-3 font-semibold">Rewards</th>
+                <th className="w-28 sm:w-50 px-2.5 py-2 sm:px-4 sm:py-3 font-semibold">Platform</th>
+                <th className="w-16 sm:w-28 px-2.5 py-2 sm:px-4 sm:py-3 font-semibold">Status</th>
               </tr>
             </thead>
             <tbody>
               {filtered.map((row,idx)=>(
                 <tr key={`${row.project}-${idx}`} className="group bg-black border-t border-[#2a2e35] hover:bg-[#151820]">
-                  <td className="sticky left-0 z-10 w-4 sm:w-8 px-1 py-1.5 sm:px-2 sm:py-3 bg-black group-hover:bg-[#151820] text-[#A3A3A3] whitespace-nowrap">
-                    <span className="px-0.5 py-0.5 sm:px-1 sm:py-1 text-xs font-medium rounded bg-[rgba(21,24,32,0.6)]">{idx+1}</span>
+                  <td className="sticky left-0 z-10 w-6 sm:w-8 px-1.5 py-2 sm:px-2 sm:py-3 bg-black group-hover:bg-[#151820] text-[#A3A3A3] whitespace-nowrap">
+                    <span className="px-1 py-0.5 sm:px-1 sm:py-1 text-xs font-medium rounded bg-[rgba(21,24,32,0.6)]">{idx+1}</span>
                   </td>
-                  <td className="sticky left-4 sm:left-8 z-10 w-24 sm:w-52 px-2 py-1.5 sm:px-4 sm:py-3 bg-black group-hover:bg-[#151820] text-white whitespace-nowrap">
-                    <div className="flex items-center gap-1 sm:gap-2.5 min-w-0">
+                  <td className="sticky left-6 sm:left-8 z-10 w-28 sm:w-52 px-2.5 py-2 sm:px-4 sm:py-3 bg-black group-hover:bg-[#151820] text-white whitespace-nowrap">
+                    <div className="flex items-center gap-1.5 sm:gap-2.5 min-w-0">
                       <img
                         src={platformImages.projects[row.project]||undefined}
                         alt={row.project}
-                        className="w-4 h-4 sm:w-8 sm:h-8 rounded-full object-cover"
+                        className="w-5 h-5 sm:w-8 sm:h-8 rounded-full object-cover"
                         onError={e=>(e.target as HTMLImageElement).style.display="none"}
                       />
                       <Link
                         href={`/tge/${row.project.toLowerCase().replace(/\s+/g,"-")}`}
-                        className="truncate text-xs sm:text-sm font-bold transition-colors hover:text-purple-300"
+                        className="truncate text-sm sm:text-sm font-bold transition-colors hover:text-purple-300"
                       >
                         {row.project}
                       </Link>
                     </div>
                   </td>
-                  <td className="w-14 sm:w-28 px-2 py-1.5 sm:px-4 sm:py-3 font-medium">
+                  <td className="w-16 sm:w-28 px-2.5 py-2 sm:px-4 sm:py-3 font-medium">
                     <span className={getTypeBadgeClass(row.type, true)}>
                       {getTypeDisplayName(row.type)}
                     </span>
                   </td>
-                  <td className="w-32 sm:w-64 px-2 py-1.5 sm:px-4 sm:py-3 font-medium text-[#ffffffcc]">
-                    <div className="flex items-center gap-1 sm:gap-1.5 min-w-0">
+                  <td className="w-36 sm:w-64 px-2.5 py-2 sm:px-4 sm:py-3 font-medium text-[#ffffffcc]">
+                    <div className="flex items-center gap-1.5 sm:gap-1.5 min-w-0">
                       {row.backers.slice(0,1).map(b=>(
-                        <span key={b} className="flex items-center gap-1 sm:gap-1.5 px-1 py-0.5 sm:px-2 sm:py-1 text-xs rounded bg-[rgba(71,79,92,0.35)] min-w-0 max-w-[100px] sm:max-w-[200px]">
+                        <span key={b} className="flex items-center gap-1.5 sm:gap-1.5 px-1.5 py-1 sm:px-2 sm:py-1 text-xs rounded bg-[rgba(71,79,92,0.35)] min-w-0 max-w-[120px] sm:max-w-[200px]">
                           <img
                             src={platformImages.backers[b]||undefined}
                             alt={b}
-                            className="w-3 h-3 sm:w-4 sm:h-4 rounded-full object-cover flex-shrink-0"
+                            className="w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full object-cover flex-shrink-0"
                             onError={e=>(e.target as HTMLImageElement).style.display="none"}
                           />
                           <span className="truncate">{b}</span>
@@ -479,7 +479,7 @@ export default function TGEPageClient({
                       ))}
                       {row.backers.length>1 && (
                         <button
-                          className="flex-shrink-0 px-1 py-0.5 sm:px-2 sm:py-1 text-xs text-purple-300 bg-purple-500/20 border border-purple-400/30 rounded hover:bg-purple-500/40 whitespace-nowrap"
+                          className="flex-shrink-0 px-1.5 py-1 sm:px-2 sm:py-1 text-xs text-purple-300 bg-purple-500/20 border border-purple-400/30 rounded hover:bg-purple-500/40 whitespace-nowrap"
                           onClick={()=>openListModal(`${row.project} · Backers`,"backer",row.backers,row.backersData)}
                         >
                           +{row.backers.length-1}
@@ -487,24 +487,24 @@ export default function TGEPageClient({
                       )}
                     </div>
                   </td>
-                  <td className="w-18 sm:w-36 px-2 py-1.5 sm:px-4 sm:py-3 text-xs sm:text-sm font-medium text-white">
-                    <div className="min-w-0 max-w-18 sm:max-w-36">
+                  <td className="w-20 sm:w-36 px-2.5 py-2 sm:px-4 sm:py-3 text-sm sm:text-sm font-medium text-white">
+                    <div className="min-w-0 max-w-20 sm:max-w-36">
                       <span className="block truncate">{row.amountRaised}</span>
                     </div>
                   </td>
-                  <td className="w-18 sm:w-36 px-2 py-1.5 sm:px-4 sm:py-3 text-xs sm:text-sm font-medium text-white">
-                    <div className="min-w-0 max-w-18 sm:max-w-36">
+                  <td className="w-20 sm:w-36 px-2.5 py-2 sm:px-4 sm:py-3 text-sm sm:text-sm font-medium text-white">
+                    <div className="min-w-0 max-w-20 sm:max-w-36">
                       <span className="block truncate">{row.reward}</span>
                     </div>
                   </td>
-                  <td className="w-25 sm:w-50 px-2 py-1.5 sm:px-4 sm:py-3 font-medium text-[#ffffffcc]">
-                    <div className="flex flex-wrap gap-1 sm:gap-1.5 min-w-0">
+                  <td className="w-28 sm:w-50 px-2.5 py-2 sm:px-4 sm:py-3 font-medium text-[#ffffffcc]">
+                    <div className="flex flex-wrap gap-1.5 sm:gap-1.5 min-w-0">
                       {row.infoPlatforms.slice(0,1).map(p=>(
-                        <span key={p} className="flex items-center gap-1 sm:gap-1.5 px-1 py-0.5 sm:px-2 sm:py-1 text-xs rounded bg-[rgba(42,46,53,0.35)] min-w-0">
+                        <span key={p} className="flex items-center gap-1.5 sm:gap-1.5 px-1.5 py-1 sm:px-2 sm:py-1 text-xs rounded bg-[rgba(42,46,53,0.35)] min-w-0">
                           <img
                             src={platformImages.platforms[p.toLowerCase()]||undefined}
                             alt={p}
-                            className="w-3 h-3 sm:w-4 sm:h-4 rounded-full object-cover"
+                            className="w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full object-cover"
                             onError={e=>(e.target as HTMLImageElement).style.display="none"}
                           />
                           <span className="truncate">{p}</span>
@@ -512,7 +512,7 @@ export default function TGEPageClient({
                       ))}
                       {row.infoPlatforms.length>1 && (
                         <button
-                          className="flex-shrink-0 px-1 py-0.5 sm:px-2 sm:py-1 text-xs text-purple-300 bg-purple-500/20 border border-purple-400/30 rounded hover:bg-purple-500/40"
+                          className="flex-shrink-0 px-1.5 py-1 sm:px-2 sm:py-1 text-xs text-purple-300 bg-purple-500/20 border border-purple-400/30 rounded hover:bg-purple-500/40"
                           onClick={()=>openListModal(`${row.project} · Info Platforms`,"platform",row.infoPlatforms)}
                         >
                           +{row.infoPlatforms.length-1}
@@ -520,7 +520,7 @@ export default function TGEPageClient({
                       )}
                     </div>
                   </td>
-                  <td className="w-14 sm:w-28 px-2 py-1.5 sm:px-4 sm:py-3 font-medium">
+                  <td className="w-16 sm:w-28 px-2.5 py-2 sm:px-4 sm:py-3 font-medium">
                     <span className={getStatusBadgeClass(row.status, true)}>
                       {STATUS_OPTIONS.find(s=>s.key===row.status)?.label}
                     </span>
@@ -528,7 +528,7 @@ export default function TGEPageClient({
                 </tr>
               ))}
               {filtered.length===0 && (
-                <tr><td colSpan={8} className="px-2 py-3 sm:px-4 sm:py-6 text-center text-[#A3A3A3] text-xs sm:text-sm">No results</td></tr>
+                <tr><td colSpan={8} className="px-2.5 py-4 sm:px-4 sm:py-6 text-center text-[#A3A3A3] text-sm sm:text-sm">No results</td></tr>
               )}
             </tbody>
           </table>
@@ -536,10 +536,10 @@ export default function TGEPageClient({
       </div>
 
       <Modal isOpen={isListModalOpen} onClose={()=>setIsListModalOpen(false)}>
-        <div className="space-y-2 sm:space-y-3">
-          <div className="text-base sm:text-lg font-semibold text-white">{listModalTitle}</div>
+        <div className="space-y-2.5 sm:space-y-3">
+          <div className="text-lg sm:text-lg font-semibold text-white">{listModalTitle}</div>
           {listModalType==="backer"?(
-            <div className="space-y-2 sm:space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               {(() => {
                 const tiers: Record<string, Array<{
                   name: string;
@@ -570,14 +570,14 @@ export default function TGEPageClient({
                   <>
                     {Object.keys(tiers).sort().map(t=>(
                       <div key={t}>
-                        <h4 className="mb-1 sm:mb-2 text-xs sm:text-sm font-medium text-gray-300">{t}</h4>
-                        <div className="flex flex-wrap gap-1 sm:gap-2">
+                        <h4 className="mb-1.5 sm:mb-2 text-sm sm:text-sm font-medium text-gray-300">{t}</h4>
+                        <div className="flex flex-wrap gap-1.5 sm:gap-2">
                           {tiers[t].map((b,i)=>(
-                            <div key={i} className="flex items-center gap-1 sm:gap-2 px-2 py-1 sm:px-3 sm:py-1.5 text-xs sm:text-sm text-white bg-[rgba(71,79,92,0.35)] rounded">
-                              <img src={platformImages.backers[b.name]||undefined} alt={b.name} className="w-3 h-3 sm:w-4 sm:h-4 rounded-full object-cover" onError={e=>(e.target as HTMLImageElement).style.display="none"} />
+                            <div key={i} className="flex items-center gap-1.5 sm:gap-2 px-2.5 py-1.5 sm:px-3 sm:py-1.5 text-sm sm:text-sm text-white bg-[rgba(71,79,92,0.35)] rounded">
+                              <img src={platformImages.backers[b.name]||undefined} alt={b.name} className="w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full object-cover" onError={e=>(e.target as HTMLImageElement).style.display="none"} />
                               <span>{b.name}</span>
-                              <span className="ml-0.5 sm:ml-1 text-xs text-gray-400">{b.type}</span>
-                              {b.round && <span className="ml-0.5 sm:ml-1 text-xs text-gray-400">({b.round})</span>}
+                              <span className="ml-1 sm:ml-1 text-xs text-gray-400">{b.type}</span>
+                              {b.round && <span className="ml-1 sm:ml-1 text-xs text-gray-400">({b.round})</span>}
                             </div>
                           ))}
                         </div>
@@ -585,13 +585,13 @@ export default function TGEPageClient({
                     ))}
                     {angel.length>0 && (
                       <div>
-                        <h4 className="mb-1 sm:mb-2 text-xs sm:text-sm font-medium text-gray-300">Angel</h4>
-                        <div className="flex flex-wrap gap-1 sm:gap-2">
+                        <h4 className="mb-1.5 sm:mb-2 text-sm sm:text-sm font-medium text-gray-300">Angel</h4>
+                        <div className="flex flex-wrap gap-1.5 sm:gap-2">
                           {angel.map((b,i)=>(
-                            <div key={i} className="flex items-center gap-1 sm:gap-2 px-2 py-1 sm:px-3 sm:py-1.5 text-xs sm:text-sm text-white bg-[rgba(71,79,92,0.35)] rounded">
-                              <img src={platformImages.backers[b.name]||undefined} alt={b.name} className="w-3 h-3 sm:w-4 sm:h-4 rounded-full object-cover" onError={e=>(e.target as HTMLImageElement).style.display="none"} />
+                            <div key={i} className="flex items-center gap-1.5 sm:gap-2 px-2.5 py-1.5 sm:px-3 sm:py-1.5 text-sm sm:text-sm text-white bg-[rgba(71,79,92,0.35)] rounded">
+                              <img src={platformImages.backers[b.name]||undefined} alt={b.name} className="w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full object-cover" onError={e=>(e.target as HTMLImageElement).style.display="none"} />
                               <span>{b.name}</span>
-                              <span className="ml-0.5 sm:ml-1 text-xs text-gray-400">{b.type}</span>
+                              <span className="ml-1 sm:ml-1 text-xs text-gray-400">{b.type}</span>
                             </div>
                           ))}
                         </div>
@@ -602,10 +602,10 @@ export default function TGEPageClient({
               })()}
             </div>
           ):(
-            <div className="flex flex-wrap gap-1 sm:gap-2">
+            <div className="flex flex-wrap gap-1.5 sm:gap-2">
               {listModalItems.map(item=>(
-                <span key={item} className="flex items-center gap-1 sm:gap-2 px-2 py-1 sm:px-3 sm:py-1.5 text-xs sm:text-sm text-white bg-[rgba(42,46,53,0.35)] rounded">
-                  <img src={platformImages.platforms[item.toLowerCase()]||undefined} alt={item} className="w-3 h-3 sm:w-4 sm:h-4 rounded-full object-cover" onError={e=>(e.target as HTMLImageElement).style.display="none"} />
+                <span key={item} className="flex items-center gap-1.5 sm:gap-2 px-2.5 py-1.5 sm:px-3 sm:py-1.5 text-sm sm:text-sm text-white bg-[rgba(42,46,53,0.35)] rounded">
+                  <img src={platformImages.platforms[item.toLowerCase()]||undefined} alt={item} className="w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full object-cover" onError={e=>(e.target as HTMLImageElement).style.display="none"} />
                   {item}
                 </span>
               ))}
