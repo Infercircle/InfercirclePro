@@ -102,6 +102,42 @@ export async function POST(request: NextRequest) {
 
       const isNewSubscription = !existingSubscription;
       
+      // Ensure user exists in the users table first
+      const { error: userError } = await supabase
+        .from('users')
+        .upsert({
+          id: userId,
+          email: emailTo,
+          name: nameTo,
+          image: session.user.image || null,
+          provider: 'google',
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        }, {
+          onConflict: 'id'
+        });
+
+      if (userError) {
+        console.error('Error ensuring user exists:', userError);
+        // Try to insert if upsert fails
+        const { error: insertError } = await supabase
+          .from('users')
+          .insert({
+            id: userId,
+            email: emailTo,
+            name: nameTo,
+            image: session.user.image || null,
+            provider: 'google',
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          });
+
+        if (insertError) {
+          console.error('Error inserting user:', insertError);
+          return NextResponse.json({ error: 'Failed to create user record' }, { status: 500 });
+        }
+      }
+      
       // Save subscription to database
       // Upsert by tx_ref to avoid duplicate key errors on re-verification/polling
       const { error: dbError } = await supabase

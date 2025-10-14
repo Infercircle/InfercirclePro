@@ -1,219 +1,115 @@
-"use client"
+"use client";
 
-import { SessionProvider as NextAuthSessionProvider, useSession } from "next-auth/react"
-import { ReactNode, useEffect, useState } from "react"
-import Paywall from "./Paywall"
-import PricingModal from "./PricingModal"
+import { SessionProvider as NextAuthSessionProvider, useSession } from "next-auth/react";
+import { ReactNode, useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import Paywall from "./Paywall";
+import PricingModal from "./PricingModal";
 
 interface SessionProviderProps {
-  children: ReactNode
+  children: ReactNode;
 }
 
 export default function SessionProvider({ children }: SessionProviderProps) {
-  return <NextAuthSessionProvider>
-    <PaywallController>
-      {children}
-    </PaywallController>
-  </NextAuthSessionProvider>
+  return (
+    <NextAuthSessionProvider>
+      <PaywallController>{children}</PaywallController>
+    </NextAuthSessionProvider>
+  );
 }
 
-function PaywallController({ children }: { children: ReactNode }){
+function PaywallController({ children }: { children: ReactNode }) {
   const { data: session, status } = useSession();
+  const pathname = usePathname();
+
   const [showPaywall, setShowPaywall] = useState(false);
   const [showPricingModal, setShowPricingModal] = useState(false);
   const [isLoadingSubscription, setIsLoadingSubscription] = useState(false);
 
-  // Force subscription check on every render for /tge pages
-  useEffect(() => {
-    // Only run on client side
-    if (typeof window === 'undefined') return;
-    
-    const path = window.location.pathname;
-    console.log('SessionProvider - FORCE CHECK:', path, 'status:', status, 'session:', !!session);
-    
-    // Only check on /tge routes
-    if (!path.startsWith('/tge')) {
+  // Centralized subscription check
+  const checkSubscription = async () => {
+    // Skip check for unauthenticated users or non-/tge routes
+    if (
+      status !== "authenticated" ||
+      !session?.user?.id ||
+      pathname === "/" // skip on landing page
+    ) {
       setShowPaywall(false);
       setShowPricingModal(false);
       setIsLoadingSubscription(false);
       return;
     }
 
-    // Only check if authenticated
-    if (status !== 'authenticated' || !session?.user?.id) {
-      setShowPaywall(false);
-      setShowPricingModal(false);
-      setIsLoadingSubscription(false);
-      return;
-    }
+    setIsLoadingSubscription(true);
+    try {
+      const res = await fetch(`/api/subscription/status?userId=${session.user.id}`, {
+        cache: "no-store",
+      });
 
-    // FORCE subscription check every time
-    const forceCheck = async () => {
-      console.log('SessionProvider - FORCING subscription check for user:', session.user.id);
-      setIsLoadingSubscription(true);
+      if (!res.ok) throw new Error("Failed to fetch subscription status");
+      const data = await res.json();
+      const hasActive = !!data?.hasActiveSubscription;
 
-      try {
-        const res = await fetch(`/api/subscription/status?userId=${session.user.id}`, { cache: 'no-store' });
-        const js = await res.json();
-        const hasActive = js?.hasActiveSubscription;
-        console.log('SessionProvider - FORCED result:', { hasActive, js });
-
-        if (!hasActive) {
-          console.log('SessionProvider - FORCED: No subscription, showing paywall');
-          setShowPaywall(true);
-          setShowPricingModal(false);
-        } else {
-          console.log('SessionProvider - FORCED: Has subscription, showing dashboard');
-          setShowPaywall(false);
-          setShowPricingModal(false);
-        }
-      } catch (error) {
-        console.error('SessionProvider - FORCED error:', error);
-        setShowPaywall(true);
-        setShowPricingModal(false);
-      } finally {
-        setIsLoadingSubscription(false);
+      if (pathname.startsWith("/tge")) {
+        setShowPaywall(!hasActive);
+      } else {
+        setShowPaywall(false);
       }
-    };
 
-    // Add a small delay to ensure client-side rendering is complete
-    const timeoutId = setTimeout(forceCheck, 100);
-    
-    return () => clearTimeout(timeoutId);
-  }, [session?.user?.id, status]);
+      setShowPricingModal(false);
+    } catch (err) {
+      console.error("Subscription check error:", err);
+      setShowPaywall(true);
+    } finally {
+      setIsLoadingSubscription(false);
+    }
+  };
 
+  // Run check when path, session, or auth status changes
+  useEffect(() => {
+    if (status === "loading") return; // skip while loading session
+    checkSubscription();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname, session?.user?.id, status]);
+
+  // Modal handlers
   const handleSubscribe = () => {
     setShowPricingModal(true);
-    setShowPaywall(false); // Hide paywall when showing pricing modal
+    setShowPaywall(false);
   };
 
   const handlePricingModalClose = () => {
     setShowPricingModal(false);
-    setShowPaywall(true); // Show paywall again after closing pricing modal
+    setShowPaywall(true);
   };
 
-  // Additional effect to handle route changes
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    
-    const handleRouteChange = () => {
-      const path = window.location.pathname;
-      console.log('SessionProvider - Route change detected:', path);
-      
-      if (path.startsWith('/tge') && status === 'authenticated' && session?.user?.id) {
-        // Force a subscription check on route change
-        const forceCheck = async () => {
-          console.log('SessionProvider - Route change: FORCING subscription check');
-          setIsLoadingSubscription(true);
-
-          try {
-            const res = await fetch(`/api/subscription/status?userId=${session.user.id}`, { cache: 'no-store' });
-            const js = await res.json();
-            const hasActive = js?.hasActiveSubscription;
-            console.log('SessionProvider - Route change result:', { hasActive, js });
-
-            if (!hasActive) {
-              console.log('SessionProvider - Route change: No subscription, showing paywall');
-              setShowPaywall(true);
-              setShowPricingModal(false);
-            } else {
-              console.log('SessionProvider - Route change: Has subscription, showing dashboard');
-              setShowPaywall(false);
-              setShowPricingModal(false);
-            }
-          } catch (error) {
-            console.error('SessionProvider - Route change error:', error);
-            setShowPaywall(true);
-            setShowPricingModal(false);
-          } finally {
-            setIsLoadingSubscription(false);
-          }
-        };
-
-        forceCheck();
-      }
-    };
-
-    // Listen for route changes
-    window.addEventListener('popstate', handleRouteChange);
-    
-    // Also check immediately
-    handleRouteChange();
-
-    return () => {
-      window.removeEventListener('popstate', handleRouteChange);
-    };
-  }, [session?.user?.id, status]);
-
-  // Additional effect to force check on mount
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    
-    const path = window.location.pathname;
-    console.log('SessionProvider - MOUNT CHECK:', path, 'status:', status, 'session:', !!session);
-    
-    if (path.startsWith('/tge') && status === 'authenticated' && session?.user?.id) {
-      console.log('SessionProvider - MOUNT: Starting subscription check');
-      setIsLoadingSubscription(true);
-      
-      const checkSubscription = async () => {
-        try {
-          const res = await fetch(`/api/subscription/status?userId=${session.user.id}`, { cache: 'no-store' });
-          const js = await res.json();
-          const hasActive = js?.hasActiveSubscription;
-          console.log('SessionProvider - MOUNT result:', { hasActive, js });
-
-          if (!hasActive) {
-            console.log('SessionProvider - MOUNT: No subscription, showing paywall');
-            setShowPaywall(true);
-            setShowPricingModal(false);
-          } else {
-            console.log('SessionProvider - MOUNT: Has subscription, showing dashboard');
-            setShowPaywall(false);
-            setShowPricingModal(false);
-          }
-        } catch (error) {
-          console.error('SessionProvider - MOUNT error:', error);
-          setShowPaywall(true);
-          setShowPricingModal(false);
-        } finally {
-          setIsLoadingSubscription(false);
-        }
-      };
-
-      checkSubscription();
-    }
-  }, []); // Run only on mount
-
-  // Simple render logic
   const shouldShowPaywall = showPaywall && !showPricingModal;
-  const shouldShowLoading = isLoadingSubscription;
 
-  console.log('SessionProvider - Render state:', {
-    showPaywall,
-    isLoadingSubscription,
-    showPricingModal,
-    shouldShowPaywall,
-    shouldShowLoading,
-    path: typeof window !== 'undefined' ? window.location.pathname : 'server'
-  });
-
-  return <>
-    {shouldShowLoading && (
-      <div className="fixed inset-0 z-[80] flex items-center justify-center bg-black/70 backdrop-blur-md">
-        <div className="bg-[#151820] border border-[#23272b] rounded-xl p-8 shadow-xl text-center">
-          <div className="w-16 h-16 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <h2 className="text-xl font-bold text-white mb-2">Verifying Subscription Status</h2>
-          <p className="text-gray-400">Please wait while we check your access...</p>
+  return (
+    <>
+      {/* Loader */}
+      {isLoadingSubscription && (
+        <div className="fixed inset-0 z-[80] flex items-center justify-center bg-black/70 backdrop-blur-md">
+          <div className="bg-[#151820] border border-[#23272b] rounded-xl p-8 shadow-xl text-center">
+            <div className="w-16 h-16 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <h2 className="text-xl font-bold text-white mb-2">Verifying Subscription Status</h2>
+            <p className="text-gray-400">Please wait while we check your access...</p>
+          </div>
         </div>
-      </div>
-    )}
-    {shouldShowPaywall && <Paywall onSubscribe={handleSubscribe} />}
-    <PricingModal 
-      isOpen={showPricingModal} 
-      onClose={handlePricingModalClose}
-      withBlur={true}
-    />
-    {children}
-  </>
+      )}
+
+      {/* Paywall */}
+      {shouldShowPaywall && <Paywall onSubscribe={handleSubscribe} />}
+
+      {/* Pricing Modal */}
+      <PricingModal
+        isOpen={showPricingModal}
+        onClose={handlePricingModalClose}
+        withBlur
+      />
+
+      {/* App content */}
+      {children}
+    </>
+  );
 }

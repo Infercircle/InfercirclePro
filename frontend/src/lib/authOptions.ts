@@ -69,11 +69,6 @@ export const authOptions: NextAuthOptions = {
       return true
     },
     async redirect({ url, baseUrl }) {
-      console.log('NextAuth redirect - url:', url, 'baseUrl:', baseUrl);
-      
-      // Always redirect to /tge after successful authentication
-      // This ensures users go to the dashboard regardless of where they started
-      console.log('NextAuth redirect - forcing redirect to /tge');
       return `${baseUrl}/tge`
     },
   },

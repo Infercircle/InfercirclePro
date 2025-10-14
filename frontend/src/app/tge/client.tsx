@@ -394,7 +394,7 @@ export default function TGEPageClient({
                             </div>
                             <div className="flex items-center gap-2">
                               <img
-                                src={initialPlatformImages.platforms[p.toLowerCase()]||""}
+                                src={initialPlatformImages.platforms[p.toLowerCase()]||undefined}
                                 alt={p}
                                 className="w-4 h-4 rounded-full object-cover"
                                 onError={e=>(e.target as HTMLImageElement).style.display="none"}
@@ -449,18 +449,20 @@ export default function TGEPageClient({
                   <td className="sticky left-8 z-10 w-52 px-4 py-3 bg-black group-hover:bg-[#151820] text-white whitespace-nowrap">
                     <div className="flex items-center gap-2.5 min-w-0">
                       <img
-                        src={platformImages.projects[row.project]||""}
+                        src={platformImages.projects[row.project]||undefined}
                         alt={row.project}
                         className="w-8 h-8 rounded-full object-cover"
                         onError={e=>(e.target as HTMLImageElement).style.display="none"}
                       />
                       <Tippy content={row.project} disabled={!row.project}>
-                        <Link
-                          href={`/tge/${row.project.toLowerCase().replace(/\s+/g,"-")}`}
-                          className="truncate text-sm font-bold transition-colors hover:text-purple-300"
-                        >
-                          {row.project}
-                        </Link>
+                        <div>
+                          <Link
+                            href={`/tge/${row.project.toLowerCase().replace(/\s+/g,"-")}`}
+                            className="truncate text-sm font-bold transition-colors hover:text-purple-300"
+                          >
+                            {row.project}
+                          </Link>
+                        </div>
                       </Tippy>
                     </div>
                   </td>
@@ -474,13 +476,15 @@ export default function TGEPageClient({
                       {row.backers.slice(0,1).map(b=>(
                         <span key={b} className="flex items-center gap-1.5 px-2 py-1 text-xs rounded bg-[rgba(71,79,92,0.35)] min-w-0 max-w-[200px]">
                           <img
-                            src={platformImages.backers[b]||""}
+                            src={platformImages.backers[b]||undefined}
                             alt={b}
                             className="w-4 h-4 rounded-full object-cover flex-shrink-0"
                             onError={e=>(e.target as HTMLImageElement).style.display="none"}
                           />
                           <Tippy content={b} disabled={!b}>
-                            <span className="truncate">{b}</span>
+                            <div>
+                              <span className="truncate">{b}</span>
+                            </div>
                           </Tippy>
                         </span>
                       ))}
@@ -497,14 +501,18 @@ export default function TGEPageClient({
                   <td className="w-36 px-4 py-3 text-sm font-medium text-white">
                     <div className="min-w-0 max-w-36">
                       <Tippy content={row.amountRaised} disabled={!row.amountRaised}>
-                        <span className="block truncate">{row.amountRaised}</span>
+                        <div>
+                          <span className="block truncate">{row.amountRaised}</span>
+                        </div>
                       </Tippy>
                     </div>
                   </td>
                   <td className="w-36 px-4 py-3 text-sm font-medium text-white">
                     <div className="min-w-0 max-w-36">
                       <Tippy content={row.reward} disabled={!row.reward}>
-                        <span className="block truncate">{row.reward}</span>
+                        <div>
+                          <span className="block truncate">{row.reward}</span>
+                        </div>
                       </Tippy>
                     </div>
                   </td>
@@ -513,13 +521,15 @@ export default function TGEPageClient({
                       {row.infoPlatforms.slice(0,1).map(p=>(
                         <span key={p} className="flex items-center gap-1.5 px-2 py-1 text-xs rounded bg-[rgba(42,46,53,0.35)] min-w-0">
                           <img
-                            src={platformImages.platforms[p.toLowerCase()]||""}
+                            src={platformImages.platforms[p.toLowerCase()]||undefined}
                             alt={p}
                             className="w-4 h-4 rounded-full object-cover"
                             onError={e=>(e.target as HTMLImageElement).style.display="none"}
                           />
                           <Tippy content={p} disabled={!p}>
-                            <span className="truncate">{p}</span>
+                            <div>
+                              <span className="truncate">{p}</span>
+                            </div>
                           </Tippy>
                         </span>
                       ))}
@@ -587,7 +597,7 @@ export default function TGEPageClient({
                         <div className="flex flex-wrap gap-2">
                           {tiers[t].map((b,i)=>(
                             <div key={i} className="flex items-center gap-2 px-3 py-1.5 text-sm text-white bg-[rgba(71,79,92,0.35)] rounded">
-                              <img src={platformImages.backers[b.name]||""} alt={b.name} className="w-4 h-4 rounded-full object-cover" onError={e=>(e.target as HTMLImageElement).style.display="none"} />
+                              <img src={platformImages.backers[b.name]||undefined} alt={b.name} className="w-4 h-4 rounded-full object-cover" onError={e=>(e.target as HTMLImageElement).style.display="none"} />
                               <span>{b.name}</span>
                               <span className="ml-1 text-xs text-gray-400">{b.type}</span>
                               {b.round && <span className="ml-1 text-xs text-gray-400">({b.round})</span>}
@@ -602,7 +612,7 @@ export default function TGEPageClient({
                         <div className="flex flex-wrap gap-2">
                           {angel.map((b,i)=>(
                             <div key={i} className="flex items-center gap-2 px-3 py-1.5 text-sm text-white bg-[rgba(71,79,92,0.35)] rounded">
-                              <img src={platformImages.backers[b.name]||""} alt={b.name} className="w-4 h-4 rounded-full object-cover" onError={e=>(e.target as HTMLImageElement).style.display="none"} />
+                              <img src={platformImages.backers[b.name]||undefined} alt={b.name} className="w-4 h-4 rounded-full object-cover" onError={e=>(e.target as HTMLImageElement).style.display="none"} />
                               <span>{b.name}</span>
                               <span className="ml-1 text-xs text-gray-400">{b.type}</span>
                             </div>
@@ -618,7 +628,7 @@ export default function TGEPageClient({
             <div className="flex flex-wrap gap-2">
               {listModalItems.map(item=>(
                 <span key={item} className="flex items-center gap-2 px-3 py-1.5 text-sm text-white bg-[rgba(42,46,53,0.35)] rounded">
-                  <img src={platformImages.platforms[item.toLowerCase()]||""} alt={item} className="w-4 h-4 rounded-full object-cover" onError={e=>(e.target as HTMLImageElement).style.display="none"} />
+                  <img src={platformImages.platforms[item.toLowerCase()]||undefined} alt={item} className="w-4 h-4 rounded-full object-cover" onError={e=>(e.target as HTMLImageElement).style.display="none"} />
                   {item}
                 </span>
               ))}

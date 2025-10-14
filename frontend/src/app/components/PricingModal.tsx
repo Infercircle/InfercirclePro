@@ -15,7 +15,7 @@ const PricingModal: React.FC<PricingModalProps> = ({ isOpen, onClose, withBlur =
   const [inviteCode, setInviteCode] = useState('');
   const [isValidatingCode, setIsValidatingCode] = useState(false);
   const [codeValidationMessage, setCodeValidationMessage] = useState('');
-  
+
   const monthlyPrice = 199;
   const sixMonthPrice = 1000; // discounted 6 months total
   const sixMonthSavings = (monthlyPrice * 6) - sixMonthPrice; // $194 savings
@@ -27,10 +27,10 @@ const PricingModal: React.FC<PricingModalProps> = ({ isOpen, onClose, withBlur =
     }
 
     setIsProcessing(true);
-    
+
     try {
       const amount = billingCycle === 'monthly' ? monthlyPrice : sixMonthPrice;
-      
+
       const response = await fetch('/api/payment/initialize', {
         method: 'POST',
         headers: {
@@ -47,7 +47,6 @@ const PricingModal: React.FC<PricingModalProps> = ({ isOpen, onClose, withBlur =
       const data = await response.json();
 
       if (data.success) {
-        // Redirect to Flutterwave payment page
         window.location.href = data.payment_url;
       } else {
         const msg = data?.error || 'Payment initialization failed. Please try again.';
@@ -75,17 +74,14 @@ const PricingModal: React.FC<PricingModalProps> = ({ isOpen, onClose, withBlur =
     setCodeValidationMessage('');
 
     try {
-      console.log('PricingModal - Session:', session?.user?.id);
-      console.log('PricingModal - Code:', inviteCode.trim());
-      
       const response = await fetch('/api/invite-code/validate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           code: inviteCode.trim(),
-          userId: session?.user?.id 
+          userId: session?.user?.id
         }),
       });
 
@@ -93,7 +89,6 @@ const PricingModal: React.FC<PricingModalProps> = ({ isOpen, onClose, withBlur =
 
       if (data.success) {
         setCodeValidationMessage('✅ Invite code valid! You now have 3 days of free access.');
-        // Optionally redirect to dashboard or close modal
         setTimeout(() => {
           onClose();
           window.location.href = '/tge';
@@ -116,7 +111,6 @@ const PricingModal: React.FC<PricingModalProps> = ({ isOpen, onClose, withBlur =
           <h2 className="text-2xl font-bold text-white mb-2">TGE Campaign Access</h2>
           <p className="text-gray-400">Unlock exclusive campaign insights and data</p>
         </div>
-
 
         {/* Billing Toggle */}
         <div className="flex justify-center">
@@ -159,7 +153,7 @@ const PricingModal: React.FC<PricingModalProps> = ({ isOpen, onClose, withBlur =
                   ${billingCycle === 'monthly' ? monthlyPrice : sixMonthPrice}
                 </span>
                 {billingCycle === 'six_months' && (
-                  <span className="bg-green-600 text-white text-xs font-bold px-2 py-1 rounded-full">
+                  <span className="bg-purple-600 text-white text-xs font-bold px-2 py-1 rounded-full">
                     Save ${sixMonthSavings}
                   </span>
                 )}
@@ -167,30 +161,21 @@ const PricingModal: React.FC<PricingModalProps> = ({ isOpen, onClose, withBlur =
               <div className="text-gray-400 text-sm">
                 {billingCycle === 'monthly' ? 'per month' : 'for 6 months'}
               </div>
-              {billingCycle === 'six_months' && (
-                <div className="text-green-400 text-sm font-medium mt-1">
-                  ${Math.round(sixMonthPrice / 6)} per month (16.25% discount)
-                </div>
-              )}
             </div>
-            
+
+            {/* Features */}
             <div className="space-y-3 mb-6">
-              <div className="flex items-center gap-2 text-sm text-gray-300">
-                <div className="w-1.5 h-1.5 bg-blue-400 rounded-full"></div>
-                <span>Comprehensive TGE campaign database</span>
-              </div>
-              <div className="flex items-center gap-2 text-sm text-gray-300">
-                <div className="w-1.5 h-1.5 bg-blue-400 rounded-full"></div>
-                <span>Real-time project tracking</span>
-              </div>
-              <div className="flex items-center gap-2 text-sm text-gray-300">
-                <div className="w-1.5 h-1.5 bg-blue-400 rounded-full"></div>
-                <span>Detailed backer and VC information</span>
-              </div>
-              <div className="flex items-center gap-2 text-sm text-gray-300">
-                <div className="w-1.5 h-1.5 bg-blue-400 rounded-full"></div>
-                <span>Advanced filtering and search</span>
-              </div>
+              {[
+                "Comprehensive Info-FI campaign database",
+                "Real-time project tracking",
+                "Detailed team and VC information",
+                "Advanced filtering and search",
+              ].map((text, idx) => (
+                <div key={idx} className="flex items-center gap-2 text-sm text-gray-300">
+                  <div className="w-1.5 h-1.5 bg-purple-600 rounded-full"></div>
+                  <span>{text}</span>
+                </div>
+              ))}
             </div>
 
             <div className="space-y-3">
@@ -223,24 +208,18 @@ const PricingModal: React.FC<PricingModalProps> = ({ isOpen, onClose, withBlur =
               <h3 className="text-lg font-semibold text-white mb-2">API Access</h3>
               <p className="text-gray-400 text-sm">Programmatic data access</p>
             </div>
-            
+
             <div className="space-y-3 mb-6">
-              <div className="flex items-center gap-2 text-sm text-gray-300">
-                <div className="w-1.5 h-1.5 bg-blue-400 rounded-full"></div>
-                <span>RESTful API endpoints</span>
-              </div>
-              <div className="flex items-center gap-2 text-sm text-gray-300">
-                <div className="w-1.5 h-1.5 bg-blue-400 rounded-full"></div>
-                <span>Real-time data updates</span>
-              </div>
-              <div className="flex items-center gap-2 text-sm text-gray-300">
-                <div className="w-1.5 h-1.5 bg-blue-400 rounded-full"></div>
-                <span>High-rate limits</span>
-              </div>
-              <div className="flex items-center gap-2 text-sm text-gray-300">
-                <div className="w-1.5 h-1.5 bg-blue-400 rounded-full"></div>
-                <span>Custom integrations</span>
-              </div>
+              {[
+                "RESTful API endpoints",
+                "Real-time data updates",
+                "Custom integrations",
+              ].map((text, idx) => (
+                <div key={idx} className="flex items-center gap-2 text-sm text-gray-300">
+                  <div className="w-1.5 h-1.5 bg-purple-600 rounded-full"></div>
+                  <span>{text}</span>
+                </div>
+              ))}
             </div>
 
             <button
@@ -252,7 +231,7 @@ const PricingModal: React.FC<PricingModalProps> = ({ isOpen, onClose, withBlur =
           </div>
         </div>
 
-        {/* Subtle Invite Code Section */}
+        {/* Invite Code Section */}
         <div className="pt-3 border-t border-gray-700">
           <div className="flex items-center justify-center gap-2">
             <span className="text-sm text-gray-400">Invite code</span>
@@ -272,9 +251,13 @@ const PricingModal: React.FC<PricingModalProps> = ({ isOpen, onClose, withBlur =
               {isValidatingCode ? '...' : 'Send'}
             </button>
           </div>
-          
+
           {codeValidationMessage && (
-            <div className={`mt-2 text-sm text-center ${codeValidationMessage.startsWith('✅') ? 'text-green-400' : 'text-red-400'}`}>
+            <div
+              className={`mt-2 text-sm text-center ${
+                codeValidationMessage.startsWith('✅') ? 'text-purple-400' : 'text-red-400'
+              }`}
+            >
               {codeValidationMessage}
             </div>
           )}
@@ -285,4 +268,3 @@ const PricingModal: React.FC<PricingModalProps> = ({ isOpen, onClose, withBlur =
 };
 
 export default PricingModal;
-    

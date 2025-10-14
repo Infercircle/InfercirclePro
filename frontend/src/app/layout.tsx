@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Infercircle Pro App",
+  title: "Infercircle Pro",
   description: "AI Powered Crypto Analytics and Project Tracking Platform"
 };
 
