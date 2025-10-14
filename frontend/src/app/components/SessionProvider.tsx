@@ -25,6 +25,7 @@ function PaywallController({ children }: { children: ReactNode }){
 
   // Force subscription check on every render for /tge pages
   useEffect(() => {
+    // Only run on client side
     if (typeof window === 'undefined') return;
     
     const path = window.location.pathname;
@@ -75,7 +76,10 @@ function PaywallController({ children }: { children: ReactNode }){
       }
     };
 
-    forceCheck();
+    // Add a small delay to ensure client-side rendering is complete
+    const timeoutId = setTimeout(forceCheck, 100);
+    
+    return () => clearTimeout(timeoutId);
   }, [session?.user?.id, status]);
 
   const handleSubscribe = () => {
@@ -87,6 +91,99 @@ function PaywallController({ children }: { children: ReactNode }){
     setShowPricingModal(false);
     setShowPaywall(true); // Show paywall again after closing pricing modal
   };
+
+  // Additional effect to handle route changes
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
+    const handleRouteChange = () => {
+      const path = window.location.pathname;
+      console.log('SessionProvider - Route change detected:', path);
+      
+      if (path.startsWith('/tge') && status === 'authenticated' && session?.user?.id) {
+        // Force a subscription check on route change
+        const forceCheck = async () => {
+          console.log('SessionProvider - Route change: FORCING subscription check');
+          setIsLoadingSubscription(true);
+
+          try {
+            const res = await fetch(`/api/subscription/status?userId=${session.user.id}`, { cache: 'no-store' });
+            const js = await res.json();
+            const hasActive = js?.hasActiveSubscription;
+            console.log('SessionProvider - Route change result:', { hasActive, js });
+
+            if (!hasActive) {
+              console.log('SessionProvider - Route change: No subscription, showing paywall');
+              setShowPaywall(true);
+              setShowPricingModal(false);
+            } else {
+              console.log('SessionProvider - Route change: Has subscription, showing dashboard');
+              setShowPaywall(false);
+              setShowPricingModal(false);
+            }
+          } catch (error) {
+            console.error('SessionProvider - Route change error:', error);
+            setShowPaywall(true);
+            setShowPricingModal(false);
+          } finally {
+            setIsLoadingSubscription(false);
+          }
+        };
+
+        forceCheck();
+      }
+    };
+
+    // Listen for route changes
+    window.addEventListener('popstate', handleRouteChange);
+    
+    // Also check immediately
+    handleRouteChange();
+
+    return () => {
+      window.removeEventListener('popstate', handleRouteChange);
+    };
+  }, [session?.user?.id, status]);
+
+  // Additional effect to force check on mount
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
+    const path = window.location.pathname;
+    console.log('SessionProvider - MOUNT CHECK:', path, 'status:', status, 'session:', !!session);
+    
+    if (path.startsWith('/tge') && status === 'authenticated' && session?.user?.id) {
+      console.log('SessionProvider - MOUNT: Starting subscription check');
+      setIsLoadingSubscription(true);
+      
+      const checkSubscription = async () => {
+        try {
+          const res = await fetch(`/api/subscription/status?userId=${session.user.id}`, { cache: 'no-store' });
+          const js = await res.json();
+          const hasActive = js?.hasActiveSubscription;
+          console.log('SessionProvider - MOUNT result:', { hasActive, js });
+
+          if (!hasActive) {
+            console.log('SessionProvider - MOUNT: No subscription, showing paywall');
+            setShowPaywall(true);
+            setShowPricingModal(false);
+          } else {
+            console.log('SessionProvider - MOUNT: Has subscription, showing dashboard');
+            setShowPaywall(false);
+            setShowPricingModal(false);
+          }
+        } catch (error) {
+          console.error('SessionProvider - MOUNT error:', error);
+          setShowPaywall(true);
+          setShowPricingModal(false);
+        } finally {
+          setIsLoadingSubscription(false);
+        }
+      };
+
+      checkSubscription();
+    }
+  }, []); // Run only on mount
 
   // Simple render logic
   const shouldShowPaywall = showPaywall && !showPricingModal;

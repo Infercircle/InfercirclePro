@@ -10,7 +10,7 @@ interface PricingModalProps {
 
 const PricingModal: React.FC<PricingModalProps> = ({ isOpen, onClose, withBlur = false }) => {
   const { data: session } = useSession();
-  const [billingCycle, setBillingCycle] = useState<'monthly' | 'six_months'>('six_months');
+  const [billingCycle, setBillingCycle] = useState<'monthly' | 'six_months'>('monthly');
   const [isProcessing, setIsProcessing] = useState(false);
   const [inviteCode, setInviteCode] = useState('');
   const [isValidatingCode, setIsValidatingCode] = useState(false);
