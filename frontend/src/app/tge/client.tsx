@@ -275,7 +275,7 @@ export default function TGEPageClient({
 
   return (
     <div className="text-white min-h-screen">
-      <div className="max-w-7xl mx-auto flex flex-col gap-3 sm:gap-4 px-3 sm:px-4">
+      <div className="max-w-7xl mx-auto flex flex-col gap-3 sm:gap-4 px-1 sm:px-4">
         {/* Header */}
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 sm:gap-4">
           <h1 className="text-2xl sm:text-3xl font-bold text-white text-center lg:text-left">Campaigns</h1>
@@ -424,17 +424,17 @@ export default function TGEPageClient({
               </div>
             </div>
           )}
-          <table className="min-w-[720px] sm:min-w-[1280px] text-left text-sm sm:text-sm w-full">
+          <table className="min-w-[1100px] text-left text-sm sm:text-sm w-full">
             <thead className="bg-[#151820] text-[#A3A3A3] sticky top-0 z-30">
               <tr>
                 <th className="sticky left-0 z-40 w-6 sm:w-8 px-1.5 py-2 sm:px-2 sm:py-3 bg-[#151820] font-semibold">#</th>
-                <th className="sticky left-6 sm:left-8 z-40 w-28 sm:w-52 px-2.5 py-2 sm:px-4 sm:py-3 bg-[#151820] font-semibold">Projects</th>
-                <th className="w-16 sm:w-28 px-2.5 py-2 sm:px-4 sm:py-3 font-semibold">Type</th>
+                <th className="sticky left-6 sm:left-8 z-40 w-[120px] sm:w-52 max-w-[120px] sm:max-w-52 px-2.5 py-2 sm:px-4 sm:py-3 bg-[#151820] font-semibold">Projects</th>
+                <th className="w-16 sm:w-24 px-2.5 py-2 sm:px-4 sm:py-3 font-semibold">Type</th>
                 <th className="w-36 sm:w-64 px-2.5 py-2 sm:px-4 sm:py-3 font-semibold">Backers</th>
-                <th className="w-20 sm:w-36 px-2.5 py-2 sm:px-4 sm:py-3 font-semibold">Raised</th>
-                <th className="w-20 sm:w-36 px-2.5 py-2 sm:px-4 sm:py-3 font-semibold">Rewards</th>
-                <th className="w-28 sm:w-50 px-2.5 py-2 sm:px-4 sm:py-3 font-semibold">Platform</th>
-                <th className="w-16 sm:w-28 px-2.5 py-2 sm:px-4 sm:py-3 font-semibold">Status</th>
+                <th className="w-20 sm:w-28 px-2.5 py-2 sm:px-4 sm:py-3 font-semibold">Raised</th>
+                <th className="w-20 sm:w-32 px-2.5 py-2 sm:px-4 sm:py-3 font-semibold">Rewards</th>
+                <th className="w-28 sm:w-40 px-2.5 py-2 sm:px-4 sm:py-3 font-semibold">Platform</th>
+                <th className="w-16 sm:w-24 px-2.5 py-2 sm:px-4 sm:py-3 font-semibold">Status</th>
               </tr>
             </thead>
             <tbody>
@@ -443,23 +443,23 @@ export default function TGEPageClient({
                   <td className="sticky left-0 z-10 w-6 sm:w-8 px-1.5 py-2 sm:px-2 sm:py-3 bg-black group-hover:bg-[#151820] text-[#A3A3A3] whitespace-nowrap">
                     <span className="px-1 py-0.5 sm:px-1 sm:py-1 text-xs font-medium rounded bg-[rgba(21,24,32,0.6)]">{idx+1}</span>
                   </td>
-                  <td className="sticky left-6 sm:left-8 z-10 w-28 sm:w-52 px-2.5 py-2 sm:px-4 sm:py-3 bg-black group-hover:bg-[#151820] text-white whitespace-nowrap">
-                    <div className="flex items-center gap-1.5 sm:gap-2.5 min-w-0">
+                  <td className="sticky left-6 sm:left-8 z-10 w-[120px] sm:w-52 max-w-[120px] sm:max-w-52 px-2.5 py-2 sm:px-4 sm:py-3 bg-black group-hover:bg-[#151820] text-white">
+                    <div className="flex items-center gap-1.5 sm:gap-2.5 min-w-0 max-w-full overflow-hidden">
                       <img
                         src={platformImages.projects[row.project]||undefined}
                         alt={row.project}
-                        className="w-5 h-5 sm:w-8 sm:h-8 rounded-full object-cover"
+                        className="w-5 h-5 sm:w-8 sm:h-8 rounded-full object-cover flex-shrink-0"
                         onError={e=>(e.target as HTMLImageElement).style.display="none"}
                       />
                       <Link
                         href={`/tge/${row.project.toLowerCase().replace(/\s+/g,"-")}`}
-                        className="truncate text-sm sm:text-sm font-bold transition-colors hover:text-purple-300"
+                        className="truncate text-sm sm:text-sm font-bold transition-colors hover:text-purple-300 block min-w-0"
                       >
                         {row.project}
                       </Link>
                     </div>
                   </td>
-                  <td className="w-16 sm:w-28 px-2.5 py-2 sm:px-4 sm:py-3 font-medium">
+                  <td className="w-16 sm:w-24 px-2.5 py-2 sm:px-4 sm:py-3 font-medium">
                     <span className={getTypeBadgeClass(row.type, true)}>
                       {getTypeDisplayName(row.type)}
                     </span>
@@ -487,17 +487,17 @@ export default function TGEPageClient({
                       )}
                     </div>
                   </td>
-                  <td className="w-20 sm:w-36 px-2.5 py-2 sm:px-4 sm:py-3 text-sm sm:text-sm font-medium text-white">
-                    <div className="min-w-0 max-w-20 sm:max-w-36">
+                  <td className="w-20 sm:w-28 px-2.5 py-2 sm:px-4 sm:py-3 text-sm sm:text-sm font-medium text-white">
+                    <div className="min-w-0 max-w-20 sm:max-w-28">
                       <span className="block truncate">{row.amountRaised}</span>
                     </div>
                   </td>
-                  <td className="w-20 sm:w-36 px-2.5 py-2 sm:px-4 sm:py-3 text-sm sm:text-sm font-medium text-white">
-                    <div className="min-w-0 max-w-20 sm:max-w-36">
+                  <td className="w-20 sm:w-32 px-2.5 py-2 sm:px-4 sm:py-3 text-sm sm:text-sm font-medium text-white">
+                    <div className="min-w-0 max-w-20 sm:max-w-32">
                       <span className="block truncate">{row.reward}</span>
                     </div>
                   </td>
-                  <td className="w-28 sm:w-50 px-2.5 py-2 sm:px-4 sm:py-3 font-medium text-[#ffffffcc]">
+                  <td className="w-28 sm:w-40 px-2.5 py-2 sm:px-4 sm:py-3 font-medium text-[#ffffffcc]">
                     <div className="flex flex-wrap gap-1.5 sm:gap-1.5 min-w-0">
                       {row.infoPlatforms.slice(0,1).map(p=>(
                         <span key={p} className="flex items-center gap-1.5 sm:gap-1.5 px-1.5 py-1 sm:px-2 sm:py-1 text-xs rounded bg-[rgba(42,46,53,0.35)] min-w-0">
@@ -520,7 +520,7 @@ export default function TGEPageClient({
                       )}
                     </div>
                   </td>
-                  <td className="w-16 sm:w-28 px-2.5 py-2 sm:px-4 sm:py-3 font-medium">
+                  <td className="w-16 sm:w-24 px-2.5 py-2 sm:px-4 sm:py-3 font-medium">
                     <span className={getStatusBadgeClass(row.status, true)}>
                       {STATUS_OPTIONS.find(s=>s.key===row.status)?.label}
                     </span>

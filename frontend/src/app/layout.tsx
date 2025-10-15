@@ -3,7 +3,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/Navbar";
 import SessionProvider from "./components/SessionProvider"; 
-import Paywall from "./components/Paywall";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,7 +35,7 @@ export default function RootLayout({
         <SessionProvider>
           <Navbar />
           {/* Paywall is controlled inside SessionProvider; do not render here */}
-          <main className="pt-20 px-4">
+          <main className="pt-20 px-2 sm:px-4">
             {children}
           </main>
         </SessionProvider>
